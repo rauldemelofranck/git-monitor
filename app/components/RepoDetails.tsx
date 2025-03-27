@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import CodeDiff from "./CodeDiff";
+import { ArrowPathIcon, ChartBarIcon, TableCellsIcon, ClockIcon, LightBulbIcon } from "@heroicons/react/24/outline";
 
 type Repo = {
   id: number;
@@ -301,16 +302,26 @@ export default function RepoDetails({ repo }: Props) {
           <button 
             onClick={generateInsight}
             disabled={insightLoading || commits.length === 0}
-            className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-md text-sm transition disabled:opacity-50"
+            className="flex items-center bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded-md text-sm transition disabled:opacity-50"
           >
-            {insightLoading ? "Gerando..." : "Gerar Insight"}
+            {insightLoading ? (
+              <>
+                <ArrowPathIcon className="h-3.5 w-3.5 mr-1.5 animate-spin" />
+                Analisando commits...
+              </>
+            ) : (
+              <>
+                <ChartBarIcon className="h-3.5 w-3.5 mr-1.5" />
+                Gerar Análise Detalhada
+              </>
+            )}
           </button>
         </div>
       </div>
       
       {error && (
         <div className="mt-6 p-4 bg-red-50 rounded-md">
-          <h3 className="text-lg font-medium mb-2 text-red-700">Erro ao gerar insights</h3>
+          <h3 className="text-lg font-medium mb-2 text-red-700">Erro ao gerar análise</h3>
           <p className="text-red-600">{error}</p>
           {errorMessage && <p className="mt-2 text-gray-700">{errorMessage}</p>}
         </div>
@@ -419,12 +430,37 @@ export default function RepoDetails({ repo }: Props) {
         </div>
       )}
       
-      {activeTab === 'insights' && insight && (
-        <div className="bg-gray-50 rounded-md p-5">
-          <h3 className="text-lg font-medium mb-3">Análise do Código</h3>
-          <div className="text-gray-800 whitespace-pre-line prose prose-sm max-w-none">
-            {insight}
+      {activeTab === 'insights' && insight ? (
+        <div className="bg-gray-50 rounded-lg p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-medium flex items-center text-gray-800">
+              <TableCellsIcon className="h-4 w-4 mr-2 text-blue-500" />
+              Análise Detalhada do Código
+            </h3>
+            
+            <div className="text-xs text-gray-500 flex items-center">
+              <ClockIcon className="h-3.5 w-3.5 mr-1" />
+              Gerada em {new Date().toLocaleString()}
+            </div>
           </div>
+          
+          <div className="prose prose-sm max-w-none bg-white p-6 rounded-lg shadow-sm">
+            <div className="text-gray-800 whitespace-pre-line">{insight}</div>
+          </div>
+        </div>
+      ) : activeTab === 'insights' && (
+        <div className="bg-gray-50 rounded-lg p-8 text-center">
+          <LightBulbIcon className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+          <h3 className="text-lg font-medium text-gray-700 mb-2">Nenhuma análise disponível</h3>
+          <p className="text-gray-500 mb-4">Clique no botão "Gerar Análise Detalhada" para obter insights específicos sobre as implementações.</p>
+          <button 
+            onClick={generateInsight}
+            disabled={insightLoading || commits.length === 0}
+            className="inline-flex items-center px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-md text-sm font-medium transition-colors"
+          >
+            <ChartBarIcon className="h-4 w-4 mr-2" />
+            Gerar Análise
+          </button>
         </div>
       )}
       
