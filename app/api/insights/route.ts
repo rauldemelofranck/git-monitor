@@ -221,7 +221,7 @@ IMPORTANTE: Evite generalizações. Cada ponto da sua análise deve ser muito es
 `;
 
         const directResponse = await openai.chat.completions.create({
-          model: "gpt-4",
+          model: "gpt-4o",
           messages: [{ role: "user", content: directCommitsPrompt }],
           temperature: 0.3,
           max_tokens: 1000,
@@ -276,7 +276,7 @@ IMPORTANTE: Seja extremamente específico. Cite nomes exatos de componentes, tel
 `;
 
         const mergeResponse = await openai.chat.completions.create({
-          model: "gpt-4",
+          model: "gpt-4o",
           messages: [{ role: "user", content: mergeCommitsPrompt }],
           temperature: 0.3,
           max_tokens: 1000,
@@ -350,7 +350,7 @@ Identifique nomes EXATOS de telas, componentes e funcionalidades quando possíve
 `;
 
       const projectResponse = await openai.chat.completions.create({
-        model: "gpt-4",
+        model: "gpt-4o",
         messages: [{ role: "user", content: projectAnalysisPrompt }],
         temperature: 0.3,
         max_tokens: 800,
@@ -380,7 +380,7 @@ IMPORTANTE: Evite conselhos genéricos como "adicione mais testes". Em vez disso
 `;
 
       const recommendationsResponse = await openai.chat.completions.create({
-        model: "gpt-4",
+        model: "gpt-4o",
         messages: [
           { role: "system", content: "Você é um especialista em arquitetura de software e práticas de desenvolvimento. Sua tarefa é fornecer recomendações técnicas extremamente específicas e práticas." },
           { role: "user", content: recommendationsPrompt }
